@@ -14,6 +14,9 @@ refs.loadMoreBtn.setAttribute('disabled', true);
 
 let page = 1;
 
+refs.searchForm.addEventListener('submit', onFormSubmit);
+refs.loadMoreBtn.addEventListener('click', onLoadMore);
+
 async function onFormSubmit(e) {
   e.preventDefault();
 
@@ -70,9 +73,11 @@ async function onLoadMore(e) {
   setTimeout(() => {
     refs.loadMoreBtn.blur();
   }, 200);
+
   Loading.standard('Loading...', {
     backgroundColor: 'rgba(0,0,0,0.8)',
   });
+
   const data = await pixabayApi.getImagesByQuery(page);
   lightbox.refresh();
   Loading.remove();
@@ -103,6 +108,3 @@ const lightbox = new SimpleLightbox('.gallery a', {
   captionPosition: 'bottom',
   captionDelay: 250,
 });
-
-refs.searchForm.addEventListener('submit', onFormSubmit);
-refs.loadMoreBtn.addEventListener('click', onLoadMore);
