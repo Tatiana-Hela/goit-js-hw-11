@@ -1,0 +1,89 @@
+@import '~node_modules/modern-normalize/modern-normalize.css';
+
+.search-form {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: stretch;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  padding: 12px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+.search-input:focus {
+  border: transparent;
+  box-shadow: 0 0 5px 5px black;
+}
+.submit-btn {
+  border: transparent;
+  border-radius: 4px;
+  color: #fff;
+  background-color: blueviolet;
+}
+
+.submit-btn:focus {
+  box-shadow: 0 0 5px 5px black;
+}
+
+.load-more {
+  padding-left: 30px;
+  padding-right: 30px;
+  display: flex;
+  justify-content: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+
+  color: #fff;
+
+  background-color: blueviolet;
+  border-color: transparent;
+  border-radius: 5px;
+}
+
+.load-more:focus {
+  box-shadow: 0 0 5px 5px black;
+}
+
+.load-more[disabled] {
+  display: none;
+}
+
+.gallery {
+  display: flex;
+  max-width: 1140px;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: start;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 100px;
+}
+
+.preview-image {
+  max-width: 100%;
+  height: 250px;
+  object-fit: cover;
+  transition: transform 250ms linear;
+}
+
+.preview-image:hover {
+  transform: scale(1.1);
+}
+
+.photo-card {
+  flex-basis: calc((100% - 40px) / 3);
+}
+
+#up-page {
+  height: 1px;
+  background-color: transparent;
+}
