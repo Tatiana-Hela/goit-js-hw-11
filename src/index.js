@@ -1,10 +1,11 @@
 import { Notify } from 'notiflix';
+import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-import { refs } from './refs';
-import { createGallery } from './createGallery';
-import { PixabayAPI } from './PixabayAPI';
+import { refs } from './js/refs';
+import { createGallery } from './js/createGallery';
+import { PixabayAPI } from './js/PixabayAPI';
 import { formToJSON } from 'axios';
 
 const pixabayApi = new PixabayAPI();
@@ -23,6 +24,7 @@ async function onFormSubmit(e) {
   const {
     elements: { searchQuery },
   } = e.currentTarget;
+
   const searchValue = searchQuery.value.trim().toLowerCase();
 
   if (!searchValue) {
@@ -32,19 +34,26 @@ async function onFormSubmit(e) {
   page = 1;
   pixabayApi.query = searchValue;
   const data = await pixabayApi.getImagesByQuery(page);
+
   if (data.hits.length === 0) {
     Notify.failure(
       'Sorry, there are no images matching your search query. Please try again.'
     );
     return;
   }
+
+  if (data.hits.length > 6) {
+  }
+  Loading.standard('Loading...', {
+    backgroundColor: 'rgba(0,0,0,0.8)',
+  });
   Notify.success(`Hooray! We found ${data.totalHits} images.`);
 
   const markup = createGallery(data.hits);
   refs.gallery.innerHTML = markup;
 
   lightbox.refresh();
-
+  Loading.remove();
   if (page < Math.ceil(data.totalHits / 40)) {
     refs.loadMoreBtn.removeAttribute('disabled');
   }
@@ -61,10 +70,12 @@ async function onLoadMore(e) {
   setTimeout(() => {
     refs.loadMoreBtn.blur();
   }, 200);
-
+  Loading.standard('Loading...', {
+    backgroundColor: 'rgba(0,0,0,0.8)',
+  });
   const data = await pixabayApi.getImagesByQuery(page);
   lightbox.refresh();
-
+  Loading.remove();
   const markup = createGallery(data.hits);
   refs.gallery.insertAdjacentHTML('beforeend', markup);
   page += 1;
@@ -74,18 +85,18 @@ async function onLoadMore(e) {
     Notify.info("We're sorry, but you've reached the end of search results.");
     refs.loadMoreBtn.setAttribute('disabled', true);
   }
-  await smoothScroll();
+  // await smoothScroll();
 }
 
-async function smoothScroll() {
-  const { height: cardHeight } =
-    refs.gallery.firstElementChild.getBoundingClientRect();
+// async function smoothScroll() {
+//   const { height: cardHeight } =
+//     refs.gallery.firstElementChild.getBoundingClientRect();
 
-  window.scrollBy({
-    top: cardHeight * 2,
-    behavior: 'smooth',
-  });
-}
+//   window.scrollBy({
+//     top: cardHeight * 2,
+//     behavior: 'smooth',
+//   });
+// }
 
 const lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
